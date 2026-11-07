@@ -1,0 +1,541 @@
+{
+ "parts": [
+  [
+   "Imaging and omics datasets",
+   [
+    "Imaging",
+    "Clinical Imaging",
+    "Genomics / Transcriptomics",
+    "Epigenomics",
+    "Proteomics",
+    "Metabolomics"
+   ]
+  ],
+  [
+   "Wet-lab validation",
+   [
+    "Genetic Engineering",
+    "Biochemical Screening",
+    "Binding & Interaction",
+    "Cell-Based Assays",
+    "Pharmacology",
+    "Safety Pharmacology & Genotoxicity",
+    "ADMET",
+    "Antibody / Protein Developability",
+    "Protein Engineering",
+    "Protein Expression",
+    "Chemistry",
+    "Microbiology",
+    "Synthetic Biology"
+   ]
+  ]
+ ],
+ "cats": [
+  {
+   "category": "Imaging",
+   "items": [
+    {
+     "name": "High-content imaging",
+     "desc": "High-content imaging with multiplexed, image-based feature extraction on high-content screening platforms"
+    },
+    {
+     "name": "Spatial transcriptomics",
+     "desc": "Spatially resolved transcript profiling of tissue sections, retaining the tissue coordinates of gene expression"
+    },
+    {
+     "name": "Spatial proteomics (imaging MS)",
+     "desc": "Mass-spectrometry imaging of tissue sections, producing spatially resolved protein and peptide distribution maps"
+    },
+    {
+     "name": "Histopathology and tissue staining",
+     "desc": "Histological preparation, microscopic assessment, and selected IHC/ICC workflows"
+    }
+   ]
+  },
+  {
+   "category": "Clinical Imaging",
+   "items": [
+    {
+     "name": "MRI - structural",
+     "desc": "T1-, T2- and FLAIR-weighted magnetic resonance series covering soft-tissue and organ anatomy, delivered as DICOM"
+    },
+    {
+     "name": "MRI - diffusion-weighted and DTI",
+     "desc": "Diffusion-weighted imaging and diffusion-tensor acquisitions with derived ADC and tractography maps"
+    },
+    {
+     "name": "MRI - functional (BOLD)",
+     "desc": "Blood-oxygen-level-dependent functional MRI, task-based and resting-state"
+    },
+    {
+     "name": "MRI - spectroscopy (MRS)",
+     "desc": "In vivo magnetic resonance spectroscopy for regional metabolite concentrations"
+    },
+    {
+     "name": "Cardiac MRI",
+     "desc": "Cine, perfusion and late-gadolinium-enhancement cardiac magnetic resonance for function, viability and fibrosis"
+    },
+    {
+     "name": "CT - non-contrast and contrast-enhanced",
+     "desc": "Multi-detector computed tomography series, with and without iodinated contrast"
+    },
+    {
+     "name": "CT angiography",
+     "desc": "ECG-synchronised contrast-enhanced CT of coronary and peripheral vasculature"
+    },
+    {
+     "name": "Cone-beam CT",
+     "desc": "Cone-beam computed tomography acquired in interventional and image-guided settings"
+    },
+    {
+     "name": "Digital radiography (X-ray)",
+     "desc": "Planar digital projection radiography across chest, skeletal and abdominal indications"
+    },
+    {
+     "name": "Fluoroscopy and interventional angiography",
+     "desc": "Real-time fluoroscopic and catheter-angiographic series from diagnostic and interventional procedures"
+    },
+    {
+     "name": "Mammography and digital breast tomosynthesis",
+     "desc": "Full-field digital mammography and tomosynthesis volumes"
+    },
+    {
+     "name": "Dual-energy X-ray absorptiometry (DEXA)",
+     "desc": "Bone mineral density and body-composition scans"
+    },
+    {
+     "name": "Ultrasound - B-mode and Doppler",
+     "desc": "Greyscale and colour/spectral Doppler ultrasound across abdominal, vascular and obstetric indications"
+    },
+    {
+     "name": "Echocardiography",
+     "desc": "Transthoracic two-dimensional, three-dimensional and strain echocardiography"
+    },
+    {
+     "name": "Ultrasound elastography",
+     "desc": "Shear-wave and strain elastography for tissue stiffness, including hepatic fibrosis staging"
+    },
+    {
+     "name": "PET/CT",
+     "desc": "Positron-emission tomography with co-registered CT, including FDG and non-FDG tracers"
+    },
+    {
+     "name": "PET/MRI",
+     "desc": "Simultaneous positron-emission tomography and magnetic resonance acquisition"
+    },
+    {
+     "name": "SPECT and SPECT/CT",
+     "desc": "Single-photon-emission computed tomography, with co-registered CT where acquired"
+    },
+    {
+     "name": "Retinal imaging - fundus and OCT",
+     "desc": "Colour fundus photography and optical coherence tomography of the retina"
+    },
+    {
+     "name": "Digital pathology / whole-slide imaging",
+     "desc": "Scanned whole-slide H&E and immunohistochemistry images for quantitative review"
+    }
+   ]
+  },
+  {
+   "category": "Genomics / Transcriptomics",
+   "items": [
+    {
+     "name": "Bulk RNA-seq",
+     "desc": "Bulk RNA sequencing on current-generation Illumina short-read platforms"
+    },
+    {
+     "name": "Single-cell / single-nucleus RNA-seq",
+     "desc": "Single-cell and single-nucleus RNA sequencing on Chromium-based platforms"
+    },
+    {
+     "name": "Long-read / full-length isoform sequencing",
+     "desc": "Long-read and full-length isoform sequencing on PacBio HiFi (Revio, Sequel II) and Oxford Nanopore platforms"
+    },
+    {
+     "name": "Small RNA-seq (miRNA)",
+     "desc": "Small RNA and miRNA sequencing as a standard NGS application"
+    },
+    {
+     "name": "Targeted RNA panels",
+     "desc": "Targeted RNA panel sequencing on NGS platforms"
+    }
+   ]
+  },
+  {
+   "category": "Epigenomics",
+   "items": [
+    {
+     "name": "ChIP-seq",
+     "desc": "ChIP-seq for genome-wide protein–DNA binding site mapping"
+    },
+    {
+     "name": "CUT&RUN / CUT&Tag",
+     "desc": "CUT&RUN and CUT&Tag chromatin profiling using established kit chemistries"
+    },
+    {
+     "name": "ATAC-seq",
+     "desc": "ATAC-seq for genome-wide chromatin accessibility profiling"
+    },
+    {
+     "name": "Bisulfite sequencing / WGBS",
+     "desc": "WGBS and RRBS methylation sequencing for base-resolution DNA methylation mapping"
+    },
+    {
+     "name": "Hi-C / chromosome conformation capture",
+     "desc": "Proximity-ligation sequencing to map genome-wide chromatin contacts, for 3D genome architecture and for scaffolding genome assemblies"
+    }
+   ]
+  },
+  {
+   "category": "Proteomics",
+   "items": [
+    {
+     "name": "Bottom-up (shotgun) proteomics",
+     "desc": "LC-MS/MS shotgun proteomics on Orbitrap Exploris and Q Exactive-class instruments for protein identification and quantification"
+    },
+    {
+     "name": "Targeted proteomics (MRM/SRM/PRM)",
+     "desc": "Targeted MRM, SRM and PRM proteomics for quantitative protein panels"
+    },
+    {
+     "name": "Top-down / middle-down proteomics",
+     "desc": "Intact-protein and middle-down mass spectrometry for proteoform-level characterisation, resolving PTM combinations on the intact molecule rather than inferring them from peptides"
+    },
+    {
+     "name": "PTM-focused proteomics (phospho/glyco/ubiquitin/acetyl)",
+     "desc": "PTM-enrichment proteomics covering phospho, glyco, ubiquitin and acetyl modifications"
+    },
+    {
+     "name": "Single-cell proteomics",
+     "desc": "Nanoscale sample preparation coupled to high-sensitivity LC-MS/MS, quantifying proteomes from individual cells"
+    },
+    {
+     "name": "Proximity labeling (BioID/APEX)",
+     "desc": "Enzyme-catalysed proximity biotinylation from a bait protein, followed by streptavidin enrichment and LC-MS/MS, to map the proximal interactome in living cells"
+    },
+    {
+     "name": "Crosslinking-MS (XL-MS)",
+     "desc": "Chemical crosslinking followed by LC-MS/MS identification of crosslinked peptide pairs, giving residue-level distance restraints on protein complex architecture"
+    },
+    {
+     "name": "HDX-MS",
+     "desc": "Hydrogen–deuterium exchange with LC-MS readout, mapping backbone solvent accessibility for conformational analysis and epitope-level characterisation"
+    },
+    {
+     "name": "Chemical proteomics / ABPP",
+     "desc": "Activity-based probe labelling with LC-MS/MS readout, reporting enzyme activity and target engagement across the native proteome, including competition formats for engagement confirmation"
+    },
+    {
+     "name": "Metaproteomics",
+     "desc": "LC-MS/MS profiling of microbial community samples, with taxonomic and functional assignment of the identified proteins"
+    }
+   ]
+  },
+  {
+   "category": "Metabolomics",
+   "items": [
+    {
+     "name": "LC-MS based metabolomics (untargeted/targeted)",
+     "desc": "Untargeted and targeted LC-MS metabolomics with feature detection and quantification"
+    },
+    {
+     "name": "GC-MS based metabolomics",
+     "desc": "GC-MS metabolomics for volatile and derivatised metabolite profiling"
+    },
+    {
+     "name": "NMR-based metabolomics",
+     "desc": "NMR-based metabolomics on high-field instrumentation (600 MHz and above)"
+    },
+    {
+     "name": "Fluxomics",
+     "desc": "Stable-isotope (13C) labelling with LC-MS/GC-MS readout and metabolic flux modelling, resolving pathway-level flux distributions"
+    }
+   ]
+  },
+  {
+   "category": "Genetic Engineering",
+   "items": [
+    {
+     "name": "CRISPR knock-out/knock-in gene editing",
+     "desc": "CRISPR knock-out and knock-in editing at 50-85% editing efficiency, with sequence-verified clones in 3-5 weeks and in-house off-target panels"
+    },
+    {
+     "name": "Genome-wide / boutique CRISPR & RNAi screens",
+     "desc": "Pooled CRISPR and RNAi screening with custom and boutique library designs"
+    },
+    {
+     "name": "Knockout/knock-in phenotypic characterisation",
+     "desc": "Replicate-level phenotypic characterisation of engineered lines, with automated imaging readouts"
+    }
+   ]
+  },
+  {
+   "category": "Biochemical Screening",
+   "items": [
+    {
+     "name": "High-throughput biochemical screening (HTS)",
+     "desc": "Automated 384-well high-throughput screening at throughputs of tens of thousands of wells per day, with compound library access through partner networks"
+    },
+    {
+     "name": "Enzyme inhibition assays (IC50/Ki)",
+     "desc": "Enzyme inhibition profiling reporting IC50 and Ki with dose-response and fit-quality metrics"
+    },
+    {
+     "name": "Kinase activity assays",
+     "desc": "Kinase activity and inhibition assays run against in-house panels of tens to ~100 kinases"
+    },
+    {
+     "name": "Protease activity assays",
+     "desc": "Fluorogenic and colorimetric protease activity assays"
+    },
+    {
+     "name": "ATPase / GTPase activity assays",
+     "desc": "ATPase and GTPase activity assays in standard biochemical formats"
+    },
+    {
+     "name": "Fragment-based screening (NMR)",
+     "desc": "Ligand-observed NMR screening (STD, WaterLOGSY) of curated fragment libraries, detecting weak binders for fragment-based lead discovery"
+    }
+   ]
+  },
+  {
+   "category": "Binding & Interaction",
+   "items": [
+    {
+     "name": "SPR / BLI / MST (binding kinetics)",
+     "desc": "Binding kinetics and affinity determination by SPR and BLI on Biacore and Octet instrumentation"
+    },
+    {
+     "name": "ITC (isothermal titration calorimetry)",
+     "desc": "Isothermal titration calorimetry for label-free binding affinity and thermodynamics"
+    },
+    {
+     "name": "TR-FRET assays",
+     "desc": "TR-FRET homogeneous proximity assays in kit-based formats with plate-reader detection"
+    },
+    {
+     "name": "AlphaScreen / AlphaLISA proximity assays",
+     "desc": "AlphaScreen and AlphaLISA proximity assays using standardised kits and plate-reader detection"
+    },
+    {
+     "name": "Protein-protein interaction mapping",
+     "desc": "Protein–protein interaction mapping by targeted co-IP and pulldown"
+    },
+    {
+     "name": "Thermal shift / DSF for hit-binding confirmation",
+     "desc": "Thermal shift and nanoDSF hit-binding confirmation on Prometheus and real-time PCR-based instrumentation"
+    }
+   ]
+  },
+  {
+   "category": "Cell-Based Assays",
+   "items": [
+    {
+     "name": "Phenotypic cell-based screening",
+     "desc": "Phenotypic cell-based screening at hundreds to low thousands of compounds per week"
+    },
+    {
+     "name": "Cell-based functional / receptor assays",
+     "desc": "FLIPR-class kinetic functional assays for cell-based receptor pharmacology"
+    },
+    {
+     "name": "Reporter gene assays",
+     "desc": "Reporter gene assay panels for transcriptional and pathway readouts"
+    },
+    {
+     "name": "Cell viability / cytotoxicity assays",
+     "desc": "Kit-based cell viability and cytotoxicity assays"
+    },
+    {
+     "name": "Apoptosis assays",
+     "desc": "Flow cytometry-based apoptosis assays"
+    },
+    {
+     "name": "Flow cytometry and immunophenotyping",
+     "desc": "Cell-population and marker-expression analysis with defined panels and gating strategies"
+    }
+   ]
+  },
+  {
+   "category": "Pharmacology",
+   "items": [
+    {
+     "name": "Dose-response / EC50 / IC50 determination",
+     "desc": "Dose-response curve fitting with EC50 and IC50 determination and replicate-level reporting"
+    },
+    {
+     "name": "Functional agonist/antagonist assays",
+     "desc": "Functional agonist and antagonist pharmacology assays"
+    },
+    {
+     "name": "Off-target selectivity panels",
+     "desc": "Off-target selectivity panels, configured per programme"
+    },
+    {
+     "name": "In vivo PK/PD, xenograft efficacy studies",
+     "desc": "In vivo PK/PD and xenograft efficacy studies in regulated animal-facility settings"
+    },
+    {
+     "name": "Tumour and tissue pharmacodynamics",
+     "desc": "Tissue-based target-engagement and response assays aligned with pharmacology studies"
+    },
+    {
+     "name": "Quantitative bioanalysis",
+     "desc": "Small- and large-molecule measurement in blood, plasma, urine, tissue, and other selected biological matrices"
+    }
+   ]
+  },
+  {
+   "category": "Safety Pharmacology & Genotoxicity",
+   "items": [
+    {
+     "name": "Electrophysiology / patch clamp (hERG, ion channels)",
+     "desc": "Automated patch-clamp electrophysiology for hERG and ion-channel liability assessment on multi-well parallel-recording platforms"
+    },
+    {
+     "name": "Genotoxicity screening (Ames test)",
+     "desc": "Ames bacterial reverse-mutation genotoxicity screening, run to OECD test guidelines"
+    }
+   ]
+  },
+  {
+   "category": "ADMET",
+   "items": [
+    {
+     "name": "ADMET - solubility",
+     "desc": "Kinetic and thermodynamic solubility determination as part of core DMPK profiling"
+    },
+    {
+     "name": "ADMET - permeability (PAMPA/Caco-2)",
+     "desc": "PAMPA and Caco-2 permeability assays for passive and cell-based permeability"
+    },
+    {
+     "name": "ADMET - metabolic stability",
+     "desc": "Microsomal and hepatocyte metabolic stability assays"
+    },
+    {
+     "name": "ADMET - CYP450 inhibition/induction",
+     "desc": "CYP450 inhibition and induction panels"
+    },
+    {
+     "name": "ADMET - plasma protein binding",
+     "desc": "Plasma protein binding determination"
+    },
+    {
+     "name": "ADMET - plasma/blood stability",
+     "desc": "Plasma and blood stability assays"
+    },
+    {
+     "name": "ADMET - efflux transporter assays",
+     "desc": "Efflux transporter assays in transfected cell lines"
+    }
+   ]
+  },
+  {
+   "category": "Antibody / Protein Developability",
+   "items": [
+    {
+     "name": "Aggregation propensity (SEC-HPLC)",
+     "desc": "Aggregate and fragment quantification by SEC-HPLC"
+    },
+    {
+     "name": "Thermal stability (Tm) - proteins/antibodies",
+     "desc": "Thermal stability (Tm) determination for proteins and antibodies by nanoDSF"
+    },
+    {
+     "name": "Hydrophobicity (HIC-HPLC)",
+     "desc": "Surface hydrophobicity assessment by HIC-HPLC"
+    },
+    {
+     "name": "Charge variant analysis (IEX)",
+     "desc": "Charge-variant analysis by IEX and icIEF"
+    },
+    {
+     "name": "Polyreactivity (ELISA)",
+     "desc": "ELISA-based polyreactivity panels for antibody developability"
+    },
+    {
+     "name": "Viscosity assessment",
+     "desc": "Viscosity and formulation rheology assessment for biologics formulations"
+    },
+    {
+     "name": "Forced degradation / stress stability studies",
+     "desc": "ICH-aligned forced degradation and stress stability studies"
+    },
+    {
+     "name": "Epitope binning, FcRn binding",
+     "desc": "SPR-based epitope binning and FcRn binding assessment for antibody developability"
+    },
+    {
+     "name": "Fc effector function assays (ADCC/CDC/ADCP)",
+     "desc": "Reporter-based Fc effector function assays covering ADCC, CDC and ADCP"
+    },
+    {
+     "name": "In vitro immunogenicity (T-cell assays)",
+     "desc": "In vitro immunogenicity assessment by T-cell assays on HLA-diverse donor PBMC banks, with MAPPs peptide-presentation workflows"
+    }
+   ]
+  },
+  {
+   "category": "Protein Engineering",
+   "items": [
+    {
+     "name": "Protein engineering stability assays",
+     "desc": "Comparative variant-stability screening for engineered proteins"
+    },
+    {
+     "name": "Directed evolution / library screening",
+     "desc": "Directed evolution and display-library screening"
+    }
+   ]
+  },
+  {
+   "category": "Protein Expression",
+   "items": [
+    {
+     "name": "Recombinant protein expression (E. coli / CHO)",
+     "desc": "Recombinant protein expression in E. coli and CHO systems, with sequence-verified, GMP-track clone banking"
+    }
+   ]
+  },
+  {
+   "category": "Chemistry",
+   "items": [
+    {
+     "name": "Medicinal/peptide chemistry synthesis",
+     "desc": "Medicinal and peptide chemistry synthesis of small molecules and peptides"
+    }
+   ]
+  },
+  {
+   "category": "Microbiology",
+   "items": [
+    {
+     "name": "Antimicrobial susceptibility testing (culture/AST)",
+     "desc": "CLSI-aligned antimicrobial susceptibility testing by culture and AST"
+    },
+    {
+     "name": "Organism identification (MALDI-TOF)",
+     "desc": "Organism identification by MALDI-TOF mass spectrometry"
+    },
+    {
+     "name": "Targeted qPCR resistance-gene panels",
+     "desc": "qPCR panels for targeted resistance-gene detection on real-time PCR platforms"
+    }
+   ]
+  },
+  {
+   "category": "Synthetic Biology",
+   "items": [
+    {
+     "name": "Metabolic pathway engineering / product-titer assays",
+     "desc": "Metabolic pathway engineering with fermentation process development and product-titer assays at in-house bioreactor scale"
+    }
+   ]
+  }
+ ],
+ "notes": {
+  "Clinical Imaging": "Availability, delivery route, and the ethics and consent basis for human imaging data are confirmed per programme."
+ }
+}
