@@ -1,5 +1,132 @@
-<!doctype html><html><head><meta charset="utf-8"><title>{{ title }}</title><style>
-@page{size:A4 portrait;margin:18mm 17mm 18mm 17mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#20243b;margin:0;background:{{design.tokens.background_color}}}.cover{height:255mm;background:{{design.tokens.primary_color}};color:white;padding:35mm 18mm;page-break-after:always;border-radius:0 0 22mm 0}.eyebrow{font:9px monospace;letter-spacing:3px;color:{{design.tokens.accent_color}}}.cover h1{font-size:38pt;line-height:1.05;margin-top:30mm}.cover .rule{width:35mm;height:2px;background:{{design.tokens.accent_color}};margin:12mm 0}.page{page-break-after:always;min-height:250mm}.page h2{font-size:25pt;color:{{design.tokens.primary_color}};margin:0 0 10mm}.block{white-space:pre-wrap;font-size:10pt;line-height:1.48;margin:0 0 6mm;break-inside:avoid}.footer{position:fixed;bottom:-11mm;left:0;right:0;border-top:3mm solid {{design.tokens.accent_color}};padding-top:2mm;font:7pt monospace;color:#777;letter-spacing:1px}.muted{color:#6e7287}</style></head><body>
-<section class="cover"><div class="eyebrow">DOCUMENT REDESIGN</div><h1>{{title}}</h1><div class="rule"></div><p class="muted">Reference-guided layout · Content preserved from source</p></section>
-{% for page in content.items|groupby('source_page') %}<section class="page"><div class="eyebrow">SOURCE PAGE {{page.grouper}}</div><h2>{{title}}</h2>{% for item in page.list %}<div class="block">{{item.text}}</div>{% endfor %}<div class="footer">AI PDF REDESIGN STUDIO · SOURCE PAGE {{page.grouper}}</div></section>{% endfor %}
-</body></html>
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 18mm 17mm 18mm 17mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #20243b;
+            margin: 0;
+            background: {{ design.tokens.background_color | default('#FFFFFF') }};
+        }
+
+        .cover {
+            height: 255mm;
+            background: {{ design.tokens.primary_color | default('#191F5B') }};
+            color: white;
+            padding: 35mm 18mm;
+            page-break-after: always;
+            border-radius: 0 0 22mm 0;
+        }
+
+        .eyebrow {
+            font: 9px monospace;
+            letter-spacing: 3px;
+            color: {{ design.tokens.accent_color | default('#079B4B') }};
+        }
+
+        .cover h1 {
+            font-size: 38pt;
+            line-height: 1.05;
+            margin-top: 30mm;
+        }
+
+        .cover .rule {
+            width: 35mm;
+            height: 2px;
+            background: {{ design.tokens.accent_color | default('#079B4B') }};
+            margin: 12mm 0;
+        }
+
+        .page {
+            page-break-after: always;
+            min-height: 250mm;
+        }
+
+        .page h2 {
+            font-size: 25pt;
+            color: {{ design.tokens.primary_color | default('#191F5B') }};
+            margin: 0 0 10mm;
+        }
+
+        .block {
+            white-space: pre-wrap;
+            font-size: 10pt;
+            line-height: 1.48;
+            margin: 0 0 6mm;
+            break-inside: avoid;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: -11mm;
+            left: 0;
+            right: 0;
+            border-top: 3mm solid {{ design.tokens.accent_color | default('#079B4B') }};
+            padding-top: 2mm;
+            font: 7pt monospace;
+            color: #777;
+            letter-spacing: 1px;
+        }
+
+        .muted {
+            color: #6e7287;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- COVER PAGE -->
+    <section class="cover">
+        <div class="eyebrow">DOCUMENT REDESIGN</div>
+
+        <h1>{{ title }}</h1>
+
+        <div class="rule"></div>
+
+        <p class="muted">
+            Reference-guided layout · Content preserved from source
+        </p>
+    </section>
+
+
+    <!-- CONTENT PAGES -->
+    {% for page in content["items"] | groupby('source_page') %}
+
+        <section class="page">
+
+            <div class="eyebrow">
+                SOURCE PAGE {{ page.grouper }}
+            </div>
+
+            <h2>{{ title }}</h2>
+
+            {% for item in page.list %}
+
+                <div class="block">{{ item.text }}</div>
+
+            {% endfor %}
+
+            <div class="footer">
+                AI PDF REDESIGN STUDIO · SOURCE PAGE {{ page.grouper }}
+            </div>
+
+        </section>
+
+    {% endfor %}
+
+</body>
+</html>
