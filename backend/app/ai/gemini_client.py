@@ -256,7 +256,15 @@ def _map_api_error(exc: genai_errors.APIError, model: str, what: str) -> GeminiE
             status=code,
         )
     if code == 429:
-        return GeminiError("Gemini quota or rate limit exceeded. Wait and retry, or check your plan's limits.", kind="quota", status=code)
+        if "limit: 0" in msg and "free_tier" in msg:
+            return GeminiError(
+                f"Gemini model '{model}' has no free-tier quota on this API key (limit: 0). "
+                "Enable billing for the key's Google Cloud project, or set GEMINI_MODEL to a model your tier allows.",
+                kind="quota",
+                status=code,
+            )
+        detail = f" Details: {msg}" if msg else ""
+        return GeminiError(f"Gemini quota or rate limit exceeded. Wait and retry, or check your plan's limits.{detail}", kind="quota", status=code)
     return GeminiError(f"Gemini API error HTTP {code} while trying to {what}: {msg}", kind="server", status=code)
 
 

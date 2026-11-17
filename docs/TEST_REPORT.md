@@ -8,13 +8,13 @@ Every result below comes from a run in this session. **No live Gemini API call h
 
 | Suite | Command | Result |
 |---|---|---|
-| Backend unit and API tests (Gemini mocked) | `cd backend; .venv\Scripts\python.exe -m pytest` | **46 passed** |
+| Backend unit and API tests (Gemini mocked) | `cd backend; .venv\Scripts\python.exe -m pytest` | **47 passed** |
 | Existing fixture test | `backend\.venv\Scripts\python.exe -m pytest tests` (repo root) | **1 passed** |
 | Frontend component tests | `cd frontend; npm test` | **11 passed** |
 | Frontend type check | `npx tsc --noEmit` | passed |
 | Frontend production build | `npm run build` | passed |
 | Browser integration (real servers, stubbed Gemini) | see below | passed |
-| **Live Gemini analysis** | `scripts/live_gemini_check.py` | **not run: no API key yet** |
+| **Live Gemini analysis** | Studio in the browser, Standard depth | **blocked by quota**: see "Live Gemini run" below |
 
 ## Backend (`backend/tests/`)
 
@@ -36,8 +36,16 @@ Run with the real FastAPI backend and stubbed Gemini (`python -m tests.e2e_serve
 - All three downloads fetched from the page: SKILL.md `text/markdown` 200, analysis.json `application/json` 200, ZIP `application/zip` 200. The ZIP on disk passed `testzip()` and contained the 6 required files with valid frontmatter.
 - At 375 px width there was no horizontal page overflow (`scrollWidth == innerWidth`).
 
+## Live Gemini run (2026-11-18)
+
+Real backend with a real API key, `GEMINI_MODEL=gemini-4-argon`, run through the Studio UI on the Mextropic pair at Standard depth.
+
+- **Verified live:** the key authenticates; `scripts/list_gemini_models.py` listed 26 models; `/api/health` reported `configured: true`; both PDFs uploaded to the Gemini Files API (`files/…` names returned); the job progressed through `validating` and `preparing`.
+- **Blocked:** the content stage got HTTP 429 four times (the original request plus 3 retries with backoff), then the job failed cleanly (`kind: quota`, no downloads, and both remote files deleted). Google's message: the key is on the **free tier, which has a quota of 0 for `gemini-4-argon`**. A probe of `gemini-3.5-flash` returned 503 (high demand) at the same time.
+- **Fix made:** quota errors now show Google's reason; a free-tier "limit: 0" error says to enable billing or pick a model the tier allows (new test: `test_free_tier_zero_quota_is_explained`).
+
 ## Not yet verified
 
-1. **Live Gemini analysis**: needs `GEMINI_API_KEY` and `GEMINI_MODEL`. Run `scripts/live_gemini_check.py` (above). This will confirm that the chosen model accepts the three response schemas, that real output passes validation, and how long Deep analysis takes on real documents.
+1. **A complete live analysis**: needs a model with quota on this key (enable billing on the key's Google Cloud project, or choose a free-tier model). This will confirm that the model accepts the three response schemas, that real output passes validation, and how long Deep analysis takes.
 2. Docker images were updated but not built in this session.
 3. Not tested: macOS/Linux, or browsers other than the desktop app's Chromium.

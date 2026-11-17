@@ -132,6 +132,16 @@ def test_quota_exhausted_after_retries(make_client, tmp_path):
     assert e.value.kind == "quota" and e.value.status == 429
 
 
+def test_free_tier_zero_quota_is_explained(make_client, tmp_path):
+    msg = "You exceeded your current quota. Quota exceeded for metric: generate_content_free_tier_input_token_count, limit: 0, model: test-model"
+    err = genai_errors.ClientError(429, {"error": {"code": 429, "message": msg}})
+    c, _ = make_client([err], max_retries=0)
+    with pytest.raises(GeminiError) as e:
+        _run(c, tmp_path)
+    assert e.value.kind == "quota"
+    assert "no free-tier quota" in str(e.value) and "billing" in str(e.value)
+
+
 @pytest.mark.parametrize("code,kind", [(401, "auth"), (403, "auth"), (404, "model_not_found"), (400, "bad_request")])
 def test_non_retryable_errors(make_client, tmp_path, code, kind):
     c, fake = make_client([genai_errors.ClientError(code, {"error": {"code": code, "message": "x"}})])
