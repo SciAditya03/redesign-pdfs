@@ -1,32 +1,37 @@
+import logging
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.config import settings
-from app.api.routes import router
 
-app = FastAPI(title="AI PDF Redesign Studio API", version="0.1.1")
+from app.api.routes import health, router
+from app.config import settings
+from app.services import jobs
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    settings.projects_dir.mkdir(parents=True, exist_ok=True)
+    jobs.recover_interrupted()
+    jobs.start()
+    yield
+    jobs.shutdown()
+
+
+app = FastAPI(title="Document Intelligence Studio API", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=settings.allowed_origins,
+    allow_credentials=False,
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
+    expose_headers=["Content-Disposition"],
 )
 
 app.include_router(router)
 
-@app.get("/health")
-def health():
-    return {"status": "ok", "service": "ai-pdf-redesign-studio"}
-
-@app.get("/api/ai-status")
-def ai_status():
-    return {
-        "configured": bool(settings.api_key),
-        "provider_base_url": settings.qwen_base_url,
-        "model": settings.qwen_model,
-        "note": "API key is never returned."
-    }
+# Backwards-compatible alias of /api/health.
+app.add_api_route("/health", health, methods=["GET"], include_in_schema=False)

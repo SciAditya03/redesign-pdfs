@@ -1,80 +1,131 @@
-# AI PDF Redesign Studio
+# Document Intelligence Studio
 
-A reference-guided document redesign starter: upload an original PDF and a visual-reference PDF, analyse them with a Qwen-compatible API, review a design specification, and generate PDF + editable PPTX outputs.
+Upload two PDFs: a **Content Authority** (the document whose content must be preserved) and a **Design Authority** (the visual reference). Google Gemini analyses both original PDFs and the app packages the result as a **Claude Skill**. You then upload that Skill to Claude with the two PDFs, and Claude performs the redesign.
 
-## Architecture
+```
+Content PDF ─┐                                              ┌─ SKILL.md
+             ├─► Gemini (multimodal PDF analysis) ─► Skill ─┼─ DESIGN_ANALYSIS.md, CONTENT_STRUCTURE.md,
+Design PDF ──┘   content → design → comparative     generator  REDESIGN_STRATEGY.md, QUALITY_CHECKLIST.md
+                                                            └─ analysis.json      → ZIP for Claude
+```
 
-- `frontend/`: Next.js App Router UI (upload, analysis, preview, export entry points).
-- `backend/`: FastAPI API, PyMuPDF extraction, Qwen-compatible multimodal analysis, HTML/CSS PDF renderer, PPTX exporter, integrity checks.
-- `examples/mextropic/`: benchmark fixture from the supplied prototype and PDFs. The extracted `content.json` contains 19 categories and 102 assay entries.
+Gemini is the analysis engine; Claude is the redesign engine. The web app does not render the redesigned PDF itself.
 
-## Run locally
+## Features
+
+- Two role-specific upload cards with drag and drop, instant server-side validation (PDF signature, corrupt, encrypted, empty, size), page count, replace and remove.
+- Analysis depth: **Deep** (default; every page inventoried, with page-cited evidence) or **Standard**.
+- Output selection: Skill ZIP, standalone `SKILL.md`, analysis JSON (all selected by default).
+- Three-stage Gemini analysis with schema-constrained JSON, local Pydantic validation, one controlled repair retry, and raw responses saved for debugging. Nothing is invented: unknown values stay `null` and are flagged.
+- Background jobs with real stage-by-stage progress (no simulated percentages).
+- A results dashboard (content, design, strategy) and working downloads.
+- The API key stays on the server and is never returned by any endpoint.
+
+## Requirements
+
+- Python 3.11+ (tested with 3.13)
+- Node.js 18.17+ (tested with 24)
+- A Google Gemini API key ([Google AI Studio](https://aistudio.google.com/apikey))
+
+## Setup (Windows PowerShell)
 
 ### 1. Backend
 
-```bash
+```powershell
 cd backend
 python -m venv .venv
-# Windows: .venv\\Scripts\\activate
-# macOS/Linux: source .venv/bin/activate
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-cp .env.example .env
-# Set OPENROUTER_API_KEY in .env (recommended) and optionally QWEN_MODEL
+Copy-Item .env.example .env
+notepad .env          # set GEMINI_API_KEY
+python scripts\list_gemini_models.py   # pick a model from this list
+notepad .env          # set GEMINI_MODEL to that model name
 uvicorn app.main:app --reload --port 8000
 ```
 
+Check it: <http://localhost:8000/api/health> should show `"configured": true`. API docs: <http://localhost:8000/docs>.
+
 ### 2. Frontend
 
-```bash
+```powershell
 cd frontend
 npm install
-cp .env.local.example .env.local
+Copy-Item .env.local.example .env.local
 npm run dev
 ```
 
-Open http://localhost:3000. Backend docs: http://localhost:8000/docs.
+Open the URL Next.js prints (normally <http://localhost:3000>). **If port 3000 is busy, Next.js picks 3001, 3002 and so on. Add that origin to `CORS_ORIGINS` in `backend/.env` and restart the backend**, or free port 3000.
 
-## Qwen configuration
+macOS/Linux: use `source .venv/bin/activate` and `cp` instead of `Copy-Item`.
 
-The backend uses the OpenAI-compatible Chat Completions interface. Configure the endpoint and model for the Qwen service/account you use. For DashScope, set `QWEN_BASE_URL` to the compatible-mode endpoint for your region and `QWEN_MODEL` to a vision-capable Qwen model available to your account. Never put the API key in `NEXT_PUBLIC_*` variables.
+## Configuration
 
-## Current MVP scope
+`backend/.env` (see [`backend/.env.example`](backend/.env.example)):
 
-- Uploads are saved locally under `backend/data/` (development only).
-- Original PDF text is extracted with PyMuPDF and assigned stable content IDs.
-- Reference pages are rasterized and sent to Qwen for design-system analysis.
-- The design JSON is schema-validated and editable in the UI.
-- PDF is rendered from HTML/CSS with Playwright; PPTX is generated with python-pptx.
-- A deterministic text-integrity report compares extracted source text against the generated PDF text.
+| Variable | Required | Default | Purpose |
+|---|---|---|---|
+| `GEMINI_API_KEY` | yes | — | Gemini API key (server-side only) |
+| `GEMINI_MODEL` | yes | — | Model ID. There is deliberately no default, because IDs change often; run `scripts/list_gemini_models.py` |
+| `GEMINI_TIMEOUT_SECONDS` | no | 600 | Per-request timeout |
+| `GEMINI_MAX_RETRIES` | no | 3 | Retries on 408/429/5xx, timeouts and network errors |
+| `GEMINI_MAX_OUTPUT_TOKENS` | no | 65536 | Output cap per stage; lower it if your model's limit is smaller |
+| `DATA_DIR` | no | `./data` | Project storage (`DATA_DIR/projects/<id>/`) |
+| `MAX_UPLOAD_MB` | no | 50 | Per-file limit (the Gemini Files API allows 50 MB) |
+| `CORS_ORIGINS` | no | `http://localhost:3000,http://127.0.0.1:3000` | Comma-separated frontend origins |
+| `JOB_WORKERS` | no | 2 | Concurrent analyses |
 
-## Important limitations
+`frontend/.env.local`: `NEXT_PUBLIC_API_URL=http://localhost:8000`. Never put the Gemini key in a `NEXT_PUBLIC_*` variable.
 
-This is the first working vertical slice, not a production-ready document reconstruction engine. Scanned PDFs need OCR; complex tables, charts, equations, and source PDFs with unusual reading order require specialised handling. Qwen output is advisory: the renderer uses validated design tokens and never lets the model rewrite source content. The included Mextropic fixture is for regression testing and is not hardcoded into the generic upload workflow.
+## Using the Studio
 
+1. Drop the **content** PDF on card 01 and the **design** PDF on card 02. Each card shows the file size and page count once the backend has validated it.
+2. Choose the depth and outputs, then click **Start analysis**. Deep analysis of long documents can take several minutes.
+3. Review the Content, Design and Strategy tabs.
+4. Download **Complete Claude Skill ZIP**. In Claude, add the Skill, upload both original PDFs, and ask Claude to redesign the content document.
 
-## Recommended cloud configuration: OpenRouter + Qwen vision
+## Tests
 
-Use the OpenAI-compatible **versioned API root**, not the website root:
-
-```env
-OPENROUTER_API_KEY=sk-or-v1-your_key
-QWEN_BASE_URL=https://openrouter.ai/api/v1
-QWEN_MODEL=qwen/qwen3-vl-235b-a22b-instruct
-DATA_DIR=./data
-MAX_UPLOAD_MB=80
-CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
-API_TIMEOUT_SECONDS=180
+```powershell
+cd backend;  .venv\Scripts\python.exe -m pip install -r requirements-dev.txt;  .venv\Scripts\python.exe -m pytest
+cd frontend; npm test
 ```
 
-The OpenAI Python SDK appends `/chat/completions`, so do not put that path in `QWEN_BASE_URL`.
-The configured model must support image input. Check the current OpenRouter model catalogue before switching model IDs.
+Gemini is mocked in automated tests, so they need no API key. To try the UI without a key, run `python -m tests.e2e_server` in `backend/` (a stub Gemini on port 8001) and point `NEXT_PUBLIC_API_URL` at it.
 
-Legacy DashScope configuration is still supported with `DASHSCOPE_API_KEY`, its regional compatible-mode `/v1` URL, and a vision-capable Qwen model.
+**Live check (makes billable Gemini calls):**
 
-## Troubleshooting "Failed to fetch"
+```powershell
+cd backend
+.venv\Scripts\python.exe scripts\live_gemini_check.py ..\examples\mextropic\original.pdf ..\examples\mextropic\claude_redesign_benchmark.pdf --depth standard
+```
 
-1. Start the backend and confirm `http://localhost:8000/health` returns `{"status":"ok",...}`.
-2. Confirm `http://localhost:8000/api/ai-status` reports `configured: true`.
-3. Keep the frontend origin in `CORS_ORIGINS`; restart the backend after changing `.env`.
-4. Set `NEXT_PUBLIC_API_URL=http://localhost:8000` in `frontend/.env.local`, then restart Next.js.
-5. A browser "Failed to fetch" usually means the browser could not reach the backend or the request was blocked by CORS. An upstream model error normally appears as an HTTP response from the backend. Inspect the backend terminal for the provider's detailed error.
+## Troubleshooting
+
+| Symptom | Fix |
+|---|---|
+| Header shows **Backend offline** | Start the backend; check `NEXT_PUBLIC_API_URL`; restart `npm run dev` after editing `.env.local`. |
+| Backend is up but the browser can't reach it | The page's origin (including the port) must be in `CORS_ORIGINS`. Restart the backend after any change. |
+| **Gemini not configured** | Set both `GEMINI_API_KEY` and `GEMINI_MODEL`, then restart. |
+| "model … not found" | Run `scripts/list_gemini_models.py` and use a listed name. |
+| Rate limit / quota | Wait and retry, or check your Gemini plan's limits. |
+| "exceeded the output limit" | Use Standard depth, or raise `GEMINI_MAX_OUTPUT_TOKENS` if your model allows it. |
+| "did not match the required structure" | Raw responses are in `DATA_DIR/projects/<id>/raw/`. Retry, or try a stronger model. |
+| "Analysis interrupted" | The backend restarted mid-job. Start a new analysis. |
+
+## Known limitations
+
+- Jobs run in-process. A backend restart cancels running jobs (they are marked failed). Single instance only.
+- No authentication. Project IDs are unguessable, but this is a local or trusted-network tool.
+- Uploaded PDFs and results stay in `DATA_DIR` until you delete them.
+- Colour HEX values and font names are inferred from rendering, and are marked as estimates or with a confidence level.
+- Very long or dense documents may hit the model's output limit at Deep depth.
+- Password-protected PDFs are rejected.
+
+## More documentation
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [docs/API_REFERENCE.md](docs/API_REFERENCE.md)
+- [docs/IMPLEMENTATION_AUDIT.md](docs/IMPLEMENTATION_AUDIT.md)
+- [docs/TEST_REPORT.md](docs/TEST_REPORT.md)
+
+`examples/mextropic/` holds a benchmark pair: the original catalogue and a Claude-redesigned version. It is useful as sample input, and is not used by the application.

@@ -1,25 +1,44 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
 
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
 class Settings(BaseSettings):
-    # OPENROUTER_API_KEY is preferred. Legacy DASHSCOPE_API_KEY remains supported.
-    openrouter_api_key: str = ""
-    dashscope_api_key: str = ""
-    qwen_base_url: str = "https://openrouter.ai/api/v1"
-    qwen_model: str = "qwen/qwen3-vl-235b-a22b-instruct"
+    """Backend configuration. Values come from environment variables or backend/.env.
+
+    Secrets (GEMINI_API_KEY) are only ever read on the server and are never returned by any endpoint.
+    """
+
+    gemini_api_key: str = ""
+    # Deliberately no default: Gemini model IDs change frequently. Run scripts/list_gemini_models.py.
+    gemini_model: str = ""
+    gemini_timeout_seconds: int = 600
+    gemini_max_retries: int = 3
+    gemini_max_output_tokens: int = 65536
+
     data_dir: Path = Path("./data")
-    max_upload_mb: int = 80
+    # Gemini's Files API accepts PDFs up to 50 MB.
+    max_upload_mb: int = 50
     cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
-    api_timeout_seconds: int = 180
+    job_workers: int = 2
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore", case_sensitive=False)
 
     @property
-    def api_key(self) -> str:
-        return self.openrouter_api_key or self.dashscope_api_key
+    def gemini_configured(self) -> bool:
+        return bool(self.gemini_api_key.strip()) and bool(self.gemini_model.strip())
+
+    @property
+    def max_upload_bytes(self) -> int:
+        return self.max_upload_mb * 1024 * 1024
 
     @property
     def allowed_origins(self) -> list[str]:
         return [x.strip() for x in self.cors_origins.split(",") if x.strip()]
 
+    @property
+    def projects_dir(self) -> Path:
+        return self.data_dir / "projects"
+
+
 settings = Settings()
-settings.data_dir.mkdir(parents=True, exist_ok=True)

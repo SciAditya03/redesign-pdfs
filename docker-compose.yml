@@ -3,10 +3,13 @@ services:
     build: ./backend
     ports: ["8000:8000"]
     env_file: ./backend/.env
+    environment:
+      DATA_DIR: /app/data
     volumes: ["./backend/data:/app/data"]
   web:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
     ports: ["3000:3000"]
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8000
     depends_on: [api]

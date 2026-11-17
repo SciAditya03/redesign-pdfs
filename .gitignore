@@ -1,10 +1,27 @@
+# Environment files (examples are tracked)
 .env
-.env.local
+.env.*
+!.env.example
+!.env.local.example
+
+# Python
 .venv/
-node_modules/
-.next/
 __pycache__/
 *.pyc
+.pytest_cache/
+*.egg-info/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+# Generated projects, uploads, analysis caches
 backend/data/
-.env.local.example
-.env.example
+data/
+*.zip.tmp
+.tmp-*
+data-e2e/
+.claude/launch.json
